@@ -26,7 +26,14 @@
 
     var dFine;
     dFine = function() {};
-    dFine.types = [];
+    dFine.prototype = {
+
+    };
+
+    dFine.extend = function() {
+
+    };
+
     dFine.clazz = function(origin, prototype) {
         var heir = origin.split(' extends ')[0],
             parents = origin.split(' extends ')[1];
@@ -34,9 +41,7 @@
             parents = parents.split(',').trim()
         }
         var Type = function(params) {
-            //this
+            this
         };
-        $.extend(Clazz.prototype, prototype);
-        return Clazz;
     };
 })();
