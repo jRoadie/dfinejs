@@ -86,7 +86,7 @@
 			target.parent = to;
 			return ext.apply(child,arguments);
 		}
-	
+
 		return child
 	}
 	//Bootstrap Class by inheriting itself with empty constructor.
