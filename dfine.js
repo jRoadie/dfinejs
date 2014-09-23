@@ -43,9 +43,12 @@
     /**
      * JavaScript has five pure types: object, function, string, number & boolean
      * we will define some new types and modify few of existing types
-     * such as array <- object, float <- number, integer <- number
-     * @param type
+     * such as array <- object, regexp <- object float <- number, integer <- number
+     * @param target
      */
+    dFine.typeOf = function(target) {
+
+    };
     dFine.is = function(target, type) {
         return
     };
@@ -55,6 +58,10 @@
     };
 
     dFine.isFunction = function() {
+
+    };
+
+    dFine.isRegExp = function() {
 
     };
 
