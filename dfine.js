@@ -56,6 +56,8 @@
 
     };
 
+    dFine.classes = {};
+
     /**
      * JavaScript has five pure types: object, function, string, number & boolean
      * we will define some new types and modify few of existing types
@@ -118,9 +120,9 @@
         if(parents) {
             parents = parents.split(',').trim();
         }
-        function Type() {
+        var Type = dFine.classes[name] = function() {
             var type = name;
-            var origin = parents.map(function(v, i) { return '>' + v; }).toString();
+            var origin = name + parents.map(function(v, i) { return '>' + v; }).toString();
             this.df9 = {
                 typeOf: function() {
                     return type;
@@ -129,7 +131,7 @@
                     return parents.contains(type)
                 }
             }
-        }
+        };
 
         Type.prototype = prototype instanceof Function ? new prototype() : prototype;
         return Type;
