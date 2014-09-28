@@ -2,6 +2,21 @@
 (function() {
 
     var _array = Array.prototype;
+    _array.contains = function(list) {
+        var count = 0;
+        if(!(list instanceof Array)) {
+            list = [list];
+        }
+        for(var i = 0; i < list.length; i++) {
+            for(var j = 0; j < this.length; j++) {
+                if(list[i] === this[j]) {
+                    count++;
+                    break;
+                }
+            }
+        }
+        return count == list.length;
+    };
     _array.each = function(callback) {
         var _this = this;
         for(var i = 0; i < _this.length; i++) {
@@ -9,10 +24,11 @@
         }
     };
     _array.map = function(callback) {
-        var _this = this;
+        var _this = this, res = [];
         _this.each(function(v, i) {
-            _this[i] = callback.call(_this, v, i);
-        })
+            res[i] = callback.call(_this, v, i);
+        });
+        return res;
     };
     _array.collect = function(callback) {
         var _this = this, collects = [];
@@ -97,10 +113,24 @@
     };
 
     dFine.clazz = function(origin, prototype) {
-        if(prototype == undefined) {
-            prototype = origin
+        var name = origin.split(' extends ')[0],
+            parents = origin.split(' extends ')[1];
+        if(parents) {
+            parents = parents.split(',').trim();
         }
-        function Type() {}
+        function Type() {
+            var type = name;
+            var origin = parents.map(function(v, i) { return '>' + v; }).toString();
+            this.df9 = {
+                typeOf: function() {
+                    return type;
+                },
+                instanceOf: function(type) {
+                    return parents.contains(type)
+                }
+            }
+        }
+
         Type.prototype = prototype instanceof Function ? new prototype() : prototype;
         return Type;
     };
