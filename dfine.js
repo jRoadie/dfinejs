@@ -1,6 +1,20 @@
 //TODO: implement jQuery functions as dfineUtil
 (function() {
 
+    var _object = Object.prototype;
+    _object.collect = function(resolver) {
+        var _this = this, collected = {};
+        for(var key in _this) {
+            if(_this.hasOwnProperty(key)) {
+                var val = _this[key];
+                if(resolver.call(_this, key, val)) {
+                    collected[key] = val;
+                }
+            }
+        }
+        return collected;
+    };
+
     var _array = Array.prototype;
     _array.contains = function(list) {
         var count = 0;
@@ -17,24 +31,23 @@
         }
         return count == list.length;
     };
-    _array.each = function(callback) {
+    _array.each = function(resolver) {
         var _this = this;
         for(var i = 0; i < _this.length; i++) {
-            callback.call(_this, _this[i], i)
+            resolver.call(_this, _this[i], i)
         }
     };
-    _array.map = function(callback) {
+    _array.map = function(resolver) {
         var _this = this, res = [];
         _this.each(function(v, i) {
-            res[i] = callback.call(_this, v, i);
+            res[i] = resolver.call(_this, v, i);
         });
         return res;
     };
-    _array.collect = function(callback) {
+    _array.collect = function(resolver) {
         var _this = this, collects = [];
         _this.each(function(v, i) {
-            var satisfied = callback.call(_this, v, i);
-            if(satisfied) {
+            if(resolver.call(_this, v, i)) {
                 collects.push(v)
             }
         });
@@ -107,6 +120,10 @@
             resolver = arguments[arguments.length - 1] instanceof Function ? arguments[arguments.length - 1] : undefined,
             deep = arguments[arguments.length - 1] instanceof Boolean ? arguments[arguments.length - 1]
                 : (arguments[arguments.length - 2] instanceof Boolean ? arguments[arguments.length - 2] : true);
+        console.log(target)
+        console.log(sources)
+        console.log(resolver)
+        console.log(deep)
 
     };
 
@@ -122,13 +139,16 @@
         }
         var Type = dFine.classes[name] = function() {
             var type = name;
-            var origin = name + parents.map(function(v, i) { return '>' + v; }).toString();
+            var origin = name + parents.map(function(v) { return '>' + v }).toString();
             this.df9 = {
                 typeOf: function() {
                     return type;
                 },
                 instanceOf: function(type) {
                     return parents.contains(type)
+                },
+                originOf: function() {
+                    return origin;
                 }
             }
         };
