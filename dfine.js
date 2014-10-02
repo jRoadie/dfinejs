@@ -131,13 +131,31 @@
 
     };
 
+    var modifiers = ['public', 'private', 'protected'];
+
+    var Meta = function(meta) {
+        this.level = meta.level; //class,method,property
+        this.name = meta.name;
+        this.modifer = meta.modifer;
+        this.annotations = meta.annotations;
+    };
+
     dFine.clazz = function(origin, prototype) {
         var name = origin.split(' extends ')[0],
             parents = origin.split(' extends ')[1];
         if(parents) {
             parents = parents.split(',').trim();
         }
-        var Type = dFine.classes[name] = function() {
+        var Property = function() {
+
+        };
+        var Method = function() {
+            this.name = undefined;
+            this.arguments= undefined;
+            this.modifier = undefined;
+            this.returnType = undefined;
+        };
+        var Class = dFine.classes[name] = function() {
             var type = name;
             var origin = name + parents.map(function(v) { return '>' + v }).toString();
             this.df9 = {
@@ -147,14 +165,22 @@
                 instanceOf: function(type) {
                     return parents.contains(type)
                 },
-                originOf: function() {
+                origin: function() {
                     return origin;
                 }
             }
         };
 
-        Type.prototype = prototype instanceof Function ? new prototype() : prototype;
-        return Type;
+        Class.prototype = prototype instanceof Function ? new prototype() : prototype;
+        return Class;
+    };
+
+    dFine.method = function() {
+
+    };
+
+    dFine.property = function() {
+
     };
 
     window.dFine = dFine;
