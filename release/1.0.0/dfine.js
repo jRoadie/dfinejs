@@ -140,6 +140,13 @@
         this.annotations = meta.annotations;
     };
 
+    dFine['class'] = function(prototype) {
+        var constructor = prototype.constructor;
+        constructor.prototype = prototype;
+        return constructor;
+    };
+
+    //deprecated
     dFine.clazz = function(origin, prototype) {
         var name = origin.split(' extends ')[0],
             parents = origin.split(' extends ')[1];
